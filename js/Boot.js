@@ -9,7 +9,7 @@ Game.Boot.prototype = {
 	},
 
 	preload: function(){
-		this.load.image('preloader', 'assets/preload_bar.png');
+		this.load.image('preloader', 'assets/images/preload_bar.png');
 	},
 
 	create: function(){

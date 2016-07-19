@@ -3,10 +3,12 @@
 <head>
 	<meta charset = "UTF-8"/>
 	<title>ghosty ghosty</title>
+	<script src = "js/Functions.js"></script>
 	<script src = "js/phaser.js"></script>
 	<script src = "js/Boot.js"></script>
 	<script src = "js/Preload.js"></script>
 	<script src = "js/MainMenu.js"></script>
+	<script src = "js/Tutorial.js"></script>
 </head>
 
 
@@ -21,6 +23,7 @@ window.onload = function(){
 	game.state.add('Boot',Game.Boot);
 	game.state.add('Preload',Game.Preload);
 	game.state.add('MainMenu',Game.MainMenu);
+	game.state.add('Tutorial',Game.Tutorial);
 
 	game.state.start('Boot');
 

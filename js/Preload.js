@@ -12,7 +12,10 @@ Game.Preload.prototype = {
 		this.load.setPreloadSprite(this.preloadBar);
 
 		// Loading assets
-		this.load.spritesheet('start_button', 'assets/start_button.png', 193, 71);
+		this.load.spritesheet('start_button', 'assets/spritesheets/start_button.png', 193, 71);
+		this.load.spritesheet('player', 'assets/spritesheets/player.png', 128, 128, 4);
+		this.load.tilemap('Tutorial', 'assets/maps/tutorial.csv');
+		this.load.image('tileset', 'assets/maps/tileset.png');
 
 	}, 
 
