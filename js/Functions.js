@@ -17,7 +17,7 @@ function initControls(game){
 function initPlayer(game){
 	player = game.add.sprite(150, 275, 'player');
 	player.anchor.setTo(0.5);
-	player.animations.add('idle', [0, 1, 2, 3], 6, true);
+	player.animations.add('idle', [0, 1, 2, 3], 60, true);
 	game.physics.arcade.enable(player);
 	player.body.collideWorldBounds = true;
 	game.physics.enable(player, Phaser.Physics.ARCADE);
