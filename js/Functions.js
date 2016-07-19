@@ -21,9 +21,9 @@ function initPlayer(game){
 	player = game.add.sprite(150, 275, 'player');
 	player.anchor.setTo(0.5);
 	player.animations.add('idle', [0, 1, 4, 5], 5, true);
-	player.animations.add('turnRight', [8, 9, 12, 13, 16, 17], 36, false);
+	player.animations.add('turnRight', [8, 9, 12, 13, 16, 17], 18, false);
 	player.animations.add('walkRight', [20, 21, 24, 25], 5, true);
-	player.animations.add('turnLeft', [11, 10, 15, 14, 19, 18], 36, false);
+	player.animations.add('turnLeft', [11, 10, 15, 14, 19, 18], 18, false);
 	player.animations.add('walkLeft', [23, 22, 27, 26], 5, true);
 	game.physics.arcade.enable(player);
 	player.body.collideWorldBounds = true;
