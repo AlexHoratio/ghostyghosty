@@ -1,5 +1,10 @@
 Game.Tutorial = function(){};
 
+var map;
+var player;
+var game;
+var playerSpeed = 150;
+
 Game.Tutorial.prototype = {
 	create: function(game){
 
