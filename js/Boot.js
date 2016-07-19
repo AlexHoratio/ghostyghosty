@@ -13,7 +13,7 @@ Game.Boot.prototype = {
 	},
 
 	create: function(){
-		//this.state.start('Preload');
+		this.game.state.start('Preload');
 	}
 
 };

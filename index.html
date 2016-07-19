@@ -5,6 +5,8 @@
 	<title>ghosty ghosty</title>
 	<script src = "js/phaser.js"></script>
 	<script src = "js/Boot.js"></script>
+	<script src = "js/Preload.js"></script>
+	<script src = "js/MainMenu.js"></script>
 </head>
 
 
@@ -17,7 +19,8 @@ window.onload = function(){
 	var game = new Phaser.Game(800,600,Phaser.CANVAS,'');
 
 	game.state.add('Boot',Game.Boot);
-
+	game.state.add('Preload',Game.Preload);
+	game.state.add('MainMenu',Game.MainMenu);
 
 	game.state.start('Boot');
 
