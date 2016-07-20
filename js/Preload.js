@@ -12,9 +12,9 @@ Game.Preload.prototype = {
 		this.load.setPreloadSprite(this.preloadBar);
 
 		// Loading assets
-		this.load.spritesheet('start_button', 'assets/spritesheets/start_button.png', 256, 256);
-		this.load.spritesheet('player', 'assets/spritesheets/player.png', 128, 128, 28);
-		this.load.spritesheet('enemy_ranged', 'assets/spritesheets/enemy_ranged.png', 256, 256, 8);
+		this.load.spritesheet('start_button', 'assets/spritesheets/start_button.png', 196, 91);
+		this.load.spritesheet('player', 'assets/spritesheets/player.png', 84, 102, 28);
+		this.load.spritesheet('enemy_ranged', 'assets/spritesheets/enemy_ranged.png', 78, 144, 8);
 		this.load.tilemap('Tutorial', 'assets/maps/tutorial.csv');
 		this.load.image('tileset', 'assets/maps/tileset.png');
 

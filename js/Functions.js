@@ -29,6 +29,7 @@ function initPlayer(game, x, y){
 	player.body.collideWorldBounds = true;
 	game.physics.enable(player, Phaser.Physics.ARCADE);
 	player.physicsBodyType = Phaser.Physics.ARCADE;
+	player.body.setSize(45, 40, 20, 56);
 	player.body.velocity.x = 0;
 	player.body.velocity.y = 0;
 }
@@ -107,6 +108,8 @@ function updtMovementPlayer(game){
     player.body.velocity.x = 0.8*player.body.velocity.x;
 
     player.body.velocity.y = 0.8*player.body.velocity.y;
+
+    game.physics.arcade.collide(player, layer);
 }
 
 function updtEnemyMovement(game, enemy){
@@ -139,13 +142,20 @@ function updtEnemyMovement(game, enemy){
 
 	if(enemy.body.velocity.x > 0){
 		enemy.animations.play('walkRight');
+		enemy.meat = 1;
 	}
 
 	if(enemy.body.velocity.x < 0){
 		enemy.animations.play('walkLeft');
+		enemy.meat = -1
 	}
 
-	//enemy.body.velocity.x = 0;
-	//enemy.body.velocity.y = 0;
+	// Player visible to enemy?
+	if (Math.abs(game.physics.arcade.angleBetween(player, enemy)) < 0.8 && enemy.meat == -1){
+		console.log("You've been spotted!");
+	}
 
+	if (Math.abs(game.physics.arcade.angleBetween(player, enemy)) > Math.PI - 0.8 && enemy.meat == 1){
+		console.log("You've been spotted!");
+	}
 }

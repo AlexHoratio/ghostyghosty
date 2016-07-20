@@ -9,6 +9,7 @@ Game.Tutorial.prototype = {
 		this.stage.backgroundColor = '#d3d3d3';
 		map = this.add.tilemap('Tutorial', 25, 25);
 		map.addTilesetImage('tileset');
+		map.setCollisionBetween(0, 3);
 		layer = map.createLayer(0);
 
 		initPlayer(game, 150, 275);
