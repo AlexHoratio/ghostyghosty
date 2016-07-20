@@ -1,9 +1,6 @@
 Game.Tutorial = function(){};
 
-var map;
-var player;
-var game;
-var playerSpeed = 150;
+var enemies = {};
 
 Game.Tutorial.prototype = {
 	create: function(game){
@@ -14,7 +11,11 @@ Game.Tutorial.prototype = {
 		map.addTilesetImage('tileset');
 		layer = map.createLayer(0);
 
-		initPlayer(game);
+		initPlayer(game, 150, 275);
+
+		initEnemyRanged(game, "enemy1", 350, 275);
+		console.log(name);
+		addEnemyNodes(game, enemies["enemy1"]);
 
 		initControls(game);
 	},
@@ -22,5 +23,7 @@ Game.Tutorial.prototype = {
 	update: function(game){
 
 		updtMovementPlayer(game);
+
+		updtEnemyMovement(game, enemies["enemy1"]);
 	}
 }
