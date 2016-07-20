@@ -1,7 +1,5 @@
 Game.Tutorial = function(){};
 
-var enemies = {};
-
 Game.Tutorial.prototype = {
 	create: function(game){
 
@@ -11,6 +9,7 @@ Game.Tutorial.prototype = {
 		map.addTilesetImage('tileset');
 		map.setCollisionBetween(0, 3);
 		layer = map.createLayer(0);
+		pathfinder.setGrid(map.layers[0].data, walkables);
 
 		initPlayer(game, 150, 275);
 

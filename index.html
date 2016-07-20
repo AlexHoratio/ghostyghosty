@@ -5,6 +5,7 @@
 	<title>ghosty ghosty</title>
 	<script src = "js/Functions.js"></script>
 	<script src = "js/phaser.js"></script>
+	<script src = "js/phaser_pathfinding.js"></script>
 	<script src = "js/Boot.js"></script>
 	<script src = "js/Preload.js"></script>
 	<script src = "js/MainMenu.js"></script>
@@ -26,6 +27,11 @@ window.onload = function(){
 	game.state.add('Tutorial',Game.Tutorial);
 
 	game.state.start('Boot');
+
+
+	// Loading EasyStar.js wrapper
+	plugster = new Phaser.PluginManager(game)
+	pathfinder = plugster.add(Phaser.Plugin.PathFinderPlugin);
 
 }
 

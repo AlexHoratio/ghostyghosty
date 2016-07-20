@@ -5,6 +5,8 @@ var game;
 var playerSpeed = 150;
 var rightPlayed = 0;
 var leftPlayed = 0;
+var walkables = [-1];
+var enemies = {};
 
 //Auxiliary functions that are useful to call
 function initControls(game){
@@ -45,6 +47,10 @@ function initEnemyRanged(game, name, x, y){
 	enemies[name].body.allowGravity = false;
 	enemies[name].animations.add('walkRight', [0, 1, 4, 5], 8, true);
 	enemies[name].animations.add('walkLeft', [2, 3, 6, 7], 8, true);
+	enemies[name].sight = new Phaser.Line(x, y, player.x, player.y);
+	enemies[name].sightBlocked;
+	enemies[name].body.setSize(23, 40, 30, 98);
+	enemies[name].destination;
 }
 
 function addEnemyNodes(game, enemy){
@@ -151,11 +157,50 @@ function updtEnemyMovement(game, enemy){
 	}
 
 	// Player visible to enemy?
-	if (Math.abs(game.physics.arcade.angleBetween(player, enemy)) < 0.8 && enemy.meat == -1){
-		console.log("You've been spotted!");
+	enemy.sight.start.set(enemy.x, enemy.y);
+	enemy.sight.end.set(player.x, player.y);
+	tileHits = layer.getRayCastTiles(enemy.sight, 4, true, false); 
+	if (tileHits.length > 0){
+		enemy.sightBlocked = true;
+	} else if (tileHits.length == 0) {
+		enemy.sightBlocked = false;
 	}
 
-	if (Math.abs(game.physics.arcade.angleBetween(player, enemy)) > Math.PI - 0.8 && enemy.meat == 1){
+	if (Math.abs(game.physics.arcade.angleBetween(player, enemy)) < 0.8 && enemy.meat == -1 && !enemy.sightBlocked){
 		console.log("You've been spotted!");
+		enemy.alerted = true;
+		if (!enemy.meatTimer) {
+			enemy.meatTimer = game.time.events.add(5000, function(){enemy.alerted = false;console.log("NO MORE MEAT");enemy.meatTimer = false;}, this);
+		}
 	}
+
+	if (Math.abs(game.physics.arcade.angleBetween(player, enemy)) > Math.PI - 0.8 && enemy.meat == 1 && !enemy.sightBlocked){
+		console.log("You've been spotted!");
+		enemy.alerted = true;
+		if (!enemy.meatTimer) {
+			enemy.meatTimer = game.time.events.add(5000, function(){enemy.alerted = false;console.log("NO MORE MEAT");enemy.meatTimer = false;}, this);
+		}
+	}
+
+	// Enemy alerted?
+	if (enemy.alerted && enemy.sightBlocked){
+		if (!enemy.fleshTimer) {
+			console.log("THE MEAT");
+			enemy.fleshTimer = game.time.events.add(5000, function(){enemy.fleshTimer = false;}, this);
+			enemy.destination.x = layer.getTileX(player.x) * 25;
+			enemy.destination.y = layer.getTileY(player.y) * 25;
+			findPathTo(layer.getTileX(enemy.destination.x), layer.getTileY(enemy.destination.y));
+		}
+	}
+	game.physics.arcade.collide(layer, enemy);
+}
+
+function findPathTo(game, enemy, tilex, tiley){
+	pathfinder.setCallbackFunction(function(path) {
+		path = path || [];
+		enemy.blocked = false;
+	});
+
+	pathfinder.preparePathCalculation([enemy.x, enemy.y], [player.x, player.y]);
+	pathfinder.calculatePath();
 }
