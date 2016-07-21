@@ -7,6 +7,7 @@ var rightPlayed = 0;
 var leftPlayed = 0;
 var walkables = [-1];
 var enemies = {};
+var jumpTimer = 0;
 
 //Auxiliary functions that are useful to call
 function initControls(game){
@@ -31,7 +32,7 @@ function initPlayer(game, x, y){
 	player.body.collideWorldBounds = true;
 	game.physics.enable(player, Phaser.Physics.ARCADE);
 	player.physicsBodyType = Phaser.Physics.ARCADE;
-	player.body.setSize(45, 44, 20, 56);
+	player.body.setSize(45, 99, 20, 1);
 	player.body.velocity.x = 0;
 	player.body.velocity.y = 0;
 }
@@ -48,7 +49,7 @@ function initEnemyRanged(game, name, x, y){
 	enemies[name].animations.add('walkLeft', [2, 3, 6, 7], 8, true);
 	enemies[name].sight = new Phaser.Line(x, y, player.x, player.y);
 	enemies[name].sightBlocked;
-	enemies[name].body.setSize(23, 40, 30, 98);
+	enemies[name].body.setSize(23, 42, 30, 98);
 	enemies[name].body.allowGravity = true;
 }
 
@@ -104,7 +105,8 @@ function updtMovementPlayer(game){
 
     game.physics.arcade.collide(player, layer);
 
-	if(controls.up.isDown && player.body.blocked.down){
+	if(controls.up.isDown && player.body.blocked.down && jumpTimer < game.time.now){
+		jumpTimer = game.time.now + 1000;
 		player.body.velocity.y -= 2500;
 	}
 

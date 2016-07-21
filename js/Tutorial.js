@@ -5,17 +5,17 @@ Game.Tutorial.prototype = {
 
 		// Activate physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		game.physics.arcade.gravity.y = 2000;
+		game.physics.arcade.gravity.y = 1500;
 
 		// Make the map look worthwhile
 		game.add.sprite(0, 0, 'tutorial_background');
-		map = this.add.tilemap('Tutorial', 25, 25);
+		map = this.add.tilemap('Tutorial', 32, 32);
 		map.addTilesetImage('tileset');
 		map.setCollisionBetween(0, 3);
 		layer = map.createLayer(0);
 		layer.resizeWorld();
 
-		initPlayer(game, 150, 275);
+		initPlayer(game, 195, 425);
 
 		initEnemyRanged(game, "enemy1", 350, 275);
 		console.log(name);
