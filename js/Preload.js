@@ -17,6 +17,7 @@ Game.Preload.prototype = {
 		this.load.spritesheet('enemy_ranged', 'assets/spritesheets/enemy_ranged.png', 78, 144, 8);
 		this.load.tilemap('Tutorial', 'assets/maps/tutorial.csv');
 		this.load.image('tileset', 'assets/maps/tileset.png');
+		this.load.image('tutorial_background', 'assets/images/tutorial_background.png');
 
 	}, 
 

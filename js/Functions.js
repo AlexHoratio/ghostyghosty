@@ -31,7 +31,7 @@ function initPlayer(game, x, y){
 	player.body.collideWorldBounds = true;
 	game.physics.enable(player, Phaser.Physics.ARCADE);
 	player.physicsBodyType = Phaser.Physics.ARCADE;
-	player.body.setSize(45, 40, 20, 56);
+	player.body.setSize(45, 44, 20, 56);
 	player.body.velocity.x = 0;
 	player.body.velocity.y = 0;
 }
@@ -44,13 +44,12 @@ function initEnemyRanged(game, name, x, y){
 	enemies[name].body.collideWorldBounds = true;
 	game.physics.enable(name, Phaser.Physics.ARCADE);
 	enemies[name].physicsBodyType = Phaser.Physics.ARCADE;
-	enemies[name].body.allowGravity = false;
 	enemies[name].animations.add('walkRight', [0, 1, 4, 5], 8, true);
 	enemies[name].animations.add('walkLeft', [2, 3, 6, 7], 8, true);
 	enemies[name].sight = new Phaser.Line(x, y, player.x, player.y);
 	enemies[name].sightBlocked;
 	enemies[name].body.setSize(23, 40, 30, 98);
-	enemies[name].destination;
+	enemies[name].body.allowGravity = true;
 }
 
 function addEnemyNodes(game, enemy){
@@ -73,9 +72,9 @@ function updtMovementPlayer(game){
         player.body.velocity.x = playerSpeed*(player.body.velocity.x/Math.abs(player.body.velocity.x));
     }
 
-    if(Math.abs(player.body.velocity.y) >= playerSpeed){
-        player.body.velocity.y = playerSpeed*(player.body.velocity.y/Math.abs(player.body.velocity.y));
-    }
+    //if(Math.abs(player.body.velocity.y) >= playerSpeed){
+    //    player.body.velocity.y = playerSpeed*(player.body.velocity.y/Math.abs(player.body.velocity.y));
+    //}
 
 	if(!controls.right.isDown && !controls.left.isDown && !controls.up.isDown && !controls.down.isDown){
 		player.animations.play('idle');
@@ -103,19 +102,19 @@ function updtMovementPlayer(game){
 	}
 	game.input.onUp.add(function(){leftPlayed=0});
 
-	if(controls.up.isDown){
-		player.body.velocity.y -= playerSpeed;
+    game.physics.arcade.collide(player, layer);
+
+	if(controls.up.isDown && player.body.blocked.down){
+		player.body.velocity.y -= 2500;
 	}
 
-	if(controls.down.isDown){
-		player.body.velocity.y += playerSpeed;
-	}
+	//if(controls.down.isDown){
+	//	player.body.velocity.y += playerSpeed;
+	//}
 
     player.body.velocity.x = 0.8*player.body.velocity.x;
 
     player.body.velocity.y = 0.8*player.body.velocity.y;
-
-    game.physics.arcade.collide(player, layer);
 }
 
 function updtEnemyMovement(game, enemy){
@@ -128,23 +127,24 @@ function updtEnemyMovement(game, enemy){
 				enemy.body.velocity.y = 0;
 				break;
 			case 1:
-				game.physics.arcade.moveToXY(enemy, enemy.nodes_x[0], enemy.nodes_y[0], 75);
+				game.physics.arcade.moveToXY(enemy, enemy.nodes_x[0], enemy.y, 75);
 				game.time.events.add(2500, function(){enemy.body.velocity.x = 0;enemy.body.velocity.y = 0;enemy.animations.stop(true)}, this);
 				break;
 			case 2:
-				game.physics.arcade.moveToXY(enemy, enemy.nodes_x[1], enemy.nodes_y[1], 75);
+				game.physics.arcade.moveToXY(enemy, enemy.nodes_x[1], enemy.y, 75);
 				game.time.events.add(2500, function(){enemy.body.velocity.x = 0;enemy.body.velocity.y = 0;enemy.animations.stop(true)}, this);
 				break;
 			case 3:
-				game.physics.arcade.moveToXY(enemy, enemy.nodes_x[2], enemy.nodes_y[2], 75);
+				game.physics.arcade.moveToXY(enemy, enemy.nodes_x[2], enemy.y, 75);
 				game.time.events.add(2500, function(){enemy.body.velocity.x = 0;enemy.body.velocity.y = 0;enemy.animations.stop(true)}, this);
 				break;
 			case 4:
-				game.physics.arcade.moveToXY(enemy, enemy.nodes_x[3], enemy.nodes_y[3], 75);
+				game.physics.arcade.moveToXY(enemy, enemy.nodes_x[3], enemy.y, 75);
 				game.time.events.add(2500, function(){enemy.body.velocity.x = 0;enemy.body.velocity.y = 0;enemy.animations.stop(true)}, this);
 				break;
 		}
-	}
+	
+	} 
 
 	if(enemy.body.velocity.x > 0){
 		enemy.animations.play('walkRight');
@@ -187,20 +187,7 @@ function updtEnemyMovement(game, enemy){
 		if (!enemy.fleshTimer) {
 			console.log("THE MEAT");
 			enemy.fleshTimer = game.time.events.add(5000, function(){enemy.fleshTimer = false;}, this);
-			enemy.destination.x = layer.getTileX(player.x) * 25;
-			enemy.destination.y = layer.getTileY(player.y) * 25;
-			findPathTo(layer.getTileX(enemy.destination.x), layer.getTileY(enemy.destination.y));
 		}
 	}
 	game.physics.arcade.collide(layer, enemy);
-}
-
-function findPathTo(game, enemy, tilex, tiley){
-	pathfinder.setCallbackFunction(function(path) {
-		path = path || [];
-		enemy.blocked = false;
-	});
-
-	pathfinder.preparePathCalculation([enemy.x, enemy.y], [player.x, player.y]);
-	pathfinder.calculatePath();
 }
