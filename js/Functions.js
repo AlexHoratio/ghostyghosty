@@ -32,7 +32,7 @@ function initPlayer(game, x, y){
 	player.body.collideWorldBounds = true;
 	game.physics.enable(player, Phaser.Physics.ARCADE);
 	player.physicsBodyType = Phaser.Physics.ARCADE;
-	player.body.setSize(45, 99, 20, 1);
+	player.body.setSize(45, 96, 20, 4);
 	player.body.velocity.x = 0;
 	player.body.velocity.y = 0;
 }
@@ -45,12 +45,27 @@ function initEnemyRanged(game, name, x, y){
 	enemies[name].body.collideWorldBounds = true;
 	game.physics.enable(name, Phaser.Physics.ARCADE);
 	enemies[name].physicsBodyType = Phaser.Physics.ARCADE;
-	enemies[name].animations.add('walkRight', [0, 1, 4, 5], 8, true);
-	enemies[name].animations.add('walkLeft', [2, 3, 6, 7], 8, true);
+	enemies[name].animations.add('walkRight', [1, 0, 2], 8, true);
+	enemies[name].animations.add('walkLeft', [3, 5, 4], 8, true);
+	enemies[name].animations.add('shootRight', [8, 7, 6, 9], 8, false);
+	enemies[name].animations.add('shootLeft', [12, 13, 14, 17], 8, false);
 	enemies[name].sight = new Phaser.Line(x, y, player.x, player.y);
 	enemies[name].sightBlocked;
 	enemies[name].body.setSize(23, 42, 30, 98);
 	enemies[name].body.allowGravity = true;
+	enemies[name].shootTime = 0;
+}
+
+function initBullets(game){
+	enemyBullets = game.add.group();
+	enemyBullets.enableBody = true;
+    enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    enemyBullets.createMultiple(50, 'bullet');
+    enemyBullets.setAll('anchor.x',0.5);
+    enemyBullets.setAll('anchor.y',0.5);
+    enemyBullets.setAll('outOfBoundsKill', true);
+    enemyBullets.setAll('checkWorldBounds', true);
+    enemyBullets.setAll('allowGravity', false);
 }
 
 function addEnemyNodes(game, enemy){
@@ -106,17 +121,24 @@ function updtMovementPlayer(game){
     game.physics.arcade.collide(player, layer);
 
 	if(controls.up.isDown && player.body.blocked.down && jumpTimer < game.time.now){
-		jumpTimer = game.time.now + 1000;
+		jumpTimer = game.time.now + 200;
 		player.body.velocity.y -= 2500;
 	}
 
-	//if(controls.down.isDown){
-	//	player.body.velocity.y += playerSpeed;
-	//}
+	if(controls.down.isDown){
+		player.body.velocity.y += playerSpeed;
+	}
 
     player.body.velocity.x = 0.8*player.body.velocity.x;
 
     player.body.velocity.y = 0.8*player.body.velocity.y;
+
+
+    if(cursors.up.isDown) {
+    	enemyShootBullet(game, enemies["enemy1"]);
+    }
+
+
 }
 
 function updtEnemyMovement(game, enemy){
@@ -169,7 +191,7 @@ function updtEnemyMovement(game, enemy){
 	}
 
 	if (Math.abs(game.physics.arcade.angleBetween(player, enemy)) < 0.8 && enemy.meat == -1 && !enemy.sightBlocked){
-		console.log("You've been spotted!");
+		enemyShootBullet(game, enemy);
 		enemy.alerted = true;
 		if (!enemy.meatTimer) {
 			enemy.meatTimer = game.time.events.add(5000, function(){enemy.alerted = false;console.log("NO MORE MEAT");enemy.meatTimer = false;}, this);
@@ -177,7 +199,7 @@ function updtEnemyMovement(game, enemy){
 	}
 
 	if (Math.abs(game.physics.arcade.angleBetween(player, enemy)) > Math.PI - 0.8 && enemy.meat == 1 && !enemy.sightBlocked){
-		console.log("You've been spotted!");
+		enemyShootBullet(game, enemy);
 		enemy.alerted = true;
 		if (!enemy.meatTimer) {
 			enemy.meatTimer = game.time.events.add(5000, function(){enemy.alerted = false;console.log("NO MORE MEAT");enemy.meatTimer = false;}, this);
@@ -192,4 +214,23 @@ function updtEnemyMovement(game, enemy){
 		}
 	}
 	game.physics.arcade.collide(layer, enemy);
+}
+
+function enemyShootBullet(game, enemy){
+	if(game.time.now > enemy.shootTime){
+		enemy.shootTime = game.time.now + 1000;
+		var enemyBullet = enemyBullets.getFirstDead();
+		enemyBullet.rotation = game.physics.arcade.angleBetween(enemy, player);
+		enemyBullet.body.allowGravity = false;
+		enemy.body.velocity.x = 0;
+		enemy.body.velocity.y = 0;
+		if(enemy.meat==1){
+			enemy.animations.play('shootRight');
+			enemyBullet.reset(enemy.x + 30, enemy.y - 25);
+		} else if (enemy.meat==-1){
+			enemy.animations.play('shootLeft');
+			enemyBullet.reset(enemy.x - 30, enemy.y - 25);
+		}
+		game.physics.arcade.moveToObject(enemyBullet, player, 7500);
+	}
 }
