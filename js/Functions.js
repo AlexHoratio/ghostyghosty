@@ -30,6 +30,9 @@ function initPlayer(game, x, y){
 	player.animations.add('walkRight', [20, 21, 24, 25], 5, true);
 	player.animations.add('turnLeft', [11, 10, 15, 14, 19, 18], 18, false);
 	player.animations.add('walkLeft', [23, 22, 27, 26], 5, true);
+	player.animations.add('startfall', [53, 54], 5, false);
+	player.animations.add('fallling', [55], 5, true);
+	player.animations.add('endfall', [56, 57], 5, false);
 	game.physics.arcade.enable(player);
 	player.body.collideWorldBounds = true;
 	game.physics.enable(player, Phaser.Physics.ARCADE);
@@ -37,6 +40,7 @@ function initPlayer(game, x, y){
 	player.body.setSize(45, 96, 20, 4);
 	player.body.velocity.x = 0;
 	player.body.velocity.y = 0;
+	player.startedfalling = false;
 }
 
 function initEnemyRanged(game, name, x, y){
@@ -71,8 +75,8 @@ function initBullets(game){
 }
 
 function initUI(game){
-	game.add.sprite(640, 0, 'ectoplasm_icon');
-	ectoplasm_text = game.add.text(695, 10, ': ' + ectoplasm.toString() + '/15', {fontSize: '32px', fill: '#fff'});
+	game.add.sprite(10, 0, 'ectoplasm_icon');
+	ectoplasm_text = game.add.text(65, 10, ': ' + ectoplasm.toString() + '/15', {fontSize: '32px', fill: '#fff'});
 }
 
 function addEnemyNodes(game, enemy){
@@ -140,9 +144,14 @@ function updtMovementPlayer(game){
 
     player.body.velocity.y = 0.8*player.body.velocity.y;
 
-
-    if(cursors.up.isDown) {
-    	enemyShootBullet(game, enemies["enemy1"]);
+    // Falling animation
+    if(player.body.velocity.y < 0 && !player.startedfalling){
+    	player.animations.play('startfall')
+    	player.startedfalling = true;
+    } else if (player.body.velocity.y >= 0.1 && player.startedfalling){
+    	player.animations.play('endfall');
+    } else {
+    	player.animations.play('falling');
     }
 
 
