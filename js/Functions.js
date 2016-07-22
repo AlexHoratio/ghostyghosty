@@ -5,9 +5,11 @@ var game;
 var playerSpeed = 150;
 var rightPlayed = 0;
 var leftPlayed = 0;
-var walkables = [-1];
 var enemies = {};
 var jumpTimer = 0;
+var ectoplasm = 15;
+var gameStarted = false;
+var drainingplayer = false;
 
 //Auxiliary functions that are useful to call
 function initControls(game){
@@ -49,7 +51,7 @@ function initEnemyRanged(game, name, x, y){
 	enemies[name].animations.add('walkLeft', [3, 5, 4], 8, true);
 	enemies[name].animations.add('shootRight', [8, 7, 6, 9], 8, false);
 	enemies[name].animations.add('shootLeft', [12, 13, 14, 17], 8, false);
-	enemies[name].sight = new Phaser.Line(x, y, player.x, player.y);
+	enemies[name].sight = new Phaser.Line(x, y, 0, 0);
 	enemies[name].sightBlocked;
 	enemies[name].body.setSize(23, 42, 30, 98);
 	enemies[name].body.allowGravity = true;
@@ -66,6 +68,11 @@ function initBullets(game){
     enemyBullets.setAll('outOfBoundsKill', true);
     enemyBullets.setAll('checkWorldBounds', true);
     enemyBullets.setAll('allowGravity', false);
+}
+
+function initUI(game){
+	game.add.sprite(640, 0, 'ectoplasm_icon');
+	ectoplasm_text = game.add.text(695, 10, ': ' + ectoplasm.toString() + '/15', {fontSize: '32px', fill: '#fff'});
 }
 
 function addEnemyNodes(game, enemy){
