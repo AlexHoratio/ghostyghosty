@@ -63,7 +63,7 @@ Game.Tutorial.prototype = {
 			//protoplayer.destroy();
 			//initPlayer(game, 374, 430)
 
-			enter_underworld = game.add.text(protoplayer.x - 300, protoplayer.y - 40, ' Press D to enter\n the underworld!', {fontSize: '32px', fill: '#fff'});
+			enter_underworld = game.add.text(protoplayer.x - 300, protoplayer.y - 80, 'Press D to open a\n    portal to the\n    underworld!', {font: 'start_font', fontSize: '32px', fill: '#fff'});
 
 		}, this);
 		protoplayer.animations.play('appearFromGrave');

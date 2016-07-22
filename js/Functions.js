@@ -77,7 +77,7 @@ function initBullets(game){
 
 function initUI(game){
 	game.add.sprite(10, 0, 'ectoplasm_icon');
-	ectoplasm_text = game.add.text(65, 10, ': ' + ectoplasm.toString() + '/15', {fontSize: '32px', fill: '#fff'});
+	ectoplasm_text = game.add.text(65, 10, ': ' + ectoplasm.toString() + '/15', {font: "start_font", fontSize: '32px', fill: '#fff'});
 }
 
 function addEnemyNodes(game, enemy){

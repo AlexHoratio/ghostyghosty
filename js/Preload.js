@@ -16,6 +16,7 @@ Game.Preload.prototype = {
 		this.load.spritesheet('player', 'assets/spritesheets/player.png', 112, 104, 59);
 		this.load.spritesheet('enemy_ranged', 'assets/spritesheets/enemy_ranged.png', 104, 148, 18);
 		this.load.spritesheet('portal', 'assets/spritesheets/portal.png', 160, 160, 14);
+		this.load.bitmapFont('start_font', 'assets/spritesheets/start_font.png', 'assets/spritesheets/start_font.xml');
 		this.load.tilemap('Tutorial', 'assets/maps/tutorial.csv');
 		this.load.image('tileset', 'assets/maps/tileset.png');
 		this.load.image('tutorial_background', 'assets/images/tutorial_background.png');
