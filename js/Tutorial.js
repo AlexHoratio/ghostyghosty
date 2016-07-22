@@ -36,7 +36,7 @@ Game.Tutorial.prototype = {
 				var enemy = enemies[enemyKey];
 				updtEnemyMovement(game, enemy);
 			}
-		} else if (drainingplayer){
+		} else if (drainingplayer && ectoplasm >0){
 			ectoplasm -=1
 			ectoplasm_text.text = ': ' + ectoplasm.toString() + '/15';
 		} else if (protoplayer.visible && enter_underworld.visible){
@@ -44,8 +44,9 @@ Game.Tutorial.prototype = {
 				enter_underworld.destroy();
 				portal = game.add.sprite(protoplayer.x - 140, protoplayer.y - 75, 'portal');
 				portal_open = portal.animations.add('main', [0, 1, 2, 3, 4, 5, 6, 7, 8], 9, false);
+				drainingplayer = true;
 				portal_open.onComplete.add(function(){
-					portal.animations.add('sustain', [9, 10, 11, 12, 13], 5, true);
+					portal.animations.add('sustain', [9, 10, 11, 12], 5, true);
 					portal.animations.play('sustain');
 				})
 				portal.animations.play('main');
