@@ -11,6 +11,7 @@ var ectoplasm = 15;
 var gameStarted = false;
 var drainingplayer = false;
 var enter_underworld = false;
+var already_surprised = false;
 
 //Auxiliary functions that are useful to call
 function initControls(game){

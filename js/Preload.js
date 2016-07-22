@@ -22,6 +22,7 @@ Game.Preload.prototype = {
 		this.load.image('tutorial_background', 'assets/images/tutorial_background.png');
 		this.load.image('bullet', 'assets/images/bullet.png');
 		this.load.image('ectoplasm_icon', 'assets/images/ectoplasm.png');
+		this.load.audio('alerted', 'assets/audio/alerted.ogg');
 
 	}, 
 

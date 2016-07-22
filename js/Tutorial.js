@@ -40,24 +40,42 @@ Game.Tutorial.prototype = {
 			jumpTimer = game.time.now + 50
 			ectoplasm -=1
 			ectoplasm_text.text = ': ' + ectoplasm.toString() + '/15';
-		} else if (protoplayer.visible && enter_underworld.visible){
-			controls.right.onUp.add(function(){
-				enter_underworld.destroy();
-				portal = game.add.sprite(protoplayer.x + 80, protoplayer.y - 75, 'portal');
-				portal_open = portal.animations.add('main', [0, 1, 2, 3, 4, 5, 6, 7, 8], 9, false);
-				drainingplayer = true;
-				portal_open.onComplete.add(function(){
-					portal.animations.add('sustain', [9, 10, 11, 12], 5, true);
-					portal.animations.play('sustain');
+		} else if (protoplayer.visible && enter_underworld.visible && controls.right.isDown){
+			enter_underworld.destroy();
+			enter_underworld.visible = false;
+			portal = game.add.sprite(protoplayer.x + 80, protoplayer.y - 75, 'portal');
+			portal_open = portal.animations.add('main', [0, 1, 2, 3, 4, 5, 6, 7, 8], 9, false);
+			drainingplayer = true;
+			portal_open.onComplete.add(function(){
+				portal.animations.add('sustain', [9, 10, 11, 12], 5, true);
+				portal.animations.play('sustain');
+				game.time.events.add(1000, function(){
+					game.physics.arcade.moveToXY(protoplayer, 454, protoplayer.y, 50);
+					protoplayer.animations.play('walkRight');
 				})
-				portal.animations.play('main');
 			})
+			portal.animations.play('main');
+		} else if (protoplayer.x >= 450){
+			protoplayer.body.velocity.x = 0;
+			if (!already_surprised){
+				game.add.audio('alerted').play();
+				alerted_text = game.add.text(protoplayer.x, protoplayer.y - 130, "!", {font: 'start_font', fontSize: '72px', fill:'#f00'});
+				protoplayer.animations.play('surprised');
+				already_surprised = true;
+				game.time.events.add(1000, function(){alerted_text.destroy();})
+			}
 		}
 	},
 
 	initPlayerTutorial: function(game){
 		protoplayer = game.add.sprite(374, 430, 'player');
 		protoplayer.anchor.setTo(0.5);
+		protoplayer.physicsBodyType = Phaser.Physics.ARCADE;
+		game.physics.arcade.enable(protoplayer);
+		game.physics.enable(protoplayer, Phaser.Physics.ARCADE);
+		protoplayer.body.allowGravity = false;
+		protoplayer.animations.add('walkRight', [20, 21, 24, 25], 5, true);
+		protoplayer.animations.add('surprised', [0, 23], 3, false);
 		appearFromGrave = protoplayer.animations.add('appearFromGrave', [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 0], 12, false);
 		appearFromGrave.onComplete.add(function(){
 			//protoplayer.destroy();
