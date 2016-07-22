@@ -144,7 +144,7 @@ function updtMovementPlayer(game){
 
     player.body.velocity.y = 0.8*player.body.velocity.y;
 
-    // Falling animation
+    /* Falling animation
     if(player.body.velocity.y < 0 && !player.startedfalling){
     	player.animations.play('startfall')
     	player.startedfalling = true;
@@ -152,7 +152,7 @@ function updtMovementPlayer(game){
     	player.animations.play('endfall');
     } else {
     	player.animations.play('falling');
-    }
+    }*/
 
 
 }
