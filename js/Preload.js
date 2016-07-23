@@ -26,6 +26,9 @@ Game.Preload.prototype = {
 		this.load.image('alert', 'assets/images/alert.png');
 		this.load.audio('alerted', 'assets/audio/alerted.ogg');
 		this.load.audio('portal_sustain', 'assets/audio/portal_sustain.ogg');
+		this.load.audio('gun1', 'assets/audio/gun1.ogg');
+		this.load.audio('gun2', 'assets/audio/gun2.ogg');
+		this.load.audio('ghost_appear', 'assets/audio/ghost_appear.ogg');
 
 	}, 
 
