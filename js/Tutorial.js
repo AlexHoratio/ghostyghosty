@@ -16,6 +16,9 @@ Game.Tutorial.prototype = {
 
 		// General initialization
 		this.initPlayerTutorial(game);
+		sleeping_enemy = game.add.sprite(490, 320, 'sleeping_enemy');
+		sleeping_enemy.animations.add('sleep', [0, 1, 2, 3, 4], 1, true);
+		sleeping_enemy.animations.play('sleep');
 
 		//initEnemyRanged(game, "enemy1", 350, 275);
 		//console.log(name);
