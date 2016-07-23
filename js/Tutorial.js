@@ -39,10 +39,17 @@ Game.Tutorial.prototype = {
 				var enemy = enemies[enemyKey];
 				updtEnemyMovement(game, enemy);
 			}
-		} else if (drainingplayer && ectoplasm >0 && jumpTimer < game.time.now){
+		} else if (drainingplayer && ectoplasm > 0 && jumpTimer < game.time.now){
 			jumpTimer = game.time.now + 50
 			ectoplasm -=1
-			ectoplasm_text.text = ': ' + ectoplasm.toString() + '/15';
+			ectoplasm_text.text = ': ' + ectoplasm.toString() + '/30';
+			if(ectoplasm > 0 && ectoplasm < 30){
+				ectoplasm_icon.frame = 1;
+				ectoplasm_text.fill = '#f00';
+			} else {
+				ectoplasm_icon.frame = 0;
+				ectoplasm_text.fill = '#fff';
+			}
 		} else if (protoplayer.visible && enter_underworld.visible && controls.right.isDown){
 			enter_underworld.destroy();
 			enter_underworld.visible = false;
@@ -52,6 +59,9 @@ Game.Tutorial.prototype = {
 			portal_open.onComplete.add(function(){
 				portal.animations.add('sustain', [9, 10, 11, 12], 5, true);
 				portal.animations.play('sustain');
+				portal_sustain = game.add.audio('portal_sustain')
+				portal_sustain.loop = true;
+				portal_sustain.play();
 				game.time.events.add(1000, function(){
 					game.physics.arcade.moveToXY(protoplayer, 454, protoplayer.y, 50);
 					protoplayer.animations.play('walkRight');
@@ -62,10 +72,13 @@ Game.Tutorial.prototype = {
 			protoplayer.body.velocity.x = 0;
 			if (!already_surprised){
 				game.add.audio('alerted').play();
-				alerted_text = game.add.text(protoplayer.x, protoplayer.y - 130, "!", {font: 'start_font', fontSize: '72px', fill:'#f00'});
+				alerted_text = game.add.sprite(protoplayer.x - 62, protoplayer.y - 170, 'alert');
 				protoplayer.animations.play('surprised');
 				already_surprised = true;
-				game.time.events.add(1000, function(){alerted_text.destroy();})
+				portal_sustain.stop();
+				portal_close = portal.animations.add('close', [8, 7, 6, 5, 4, 3, 2, 1, 0], 9, false);
+				portal_close.onComplete.add(function(){portal.destroy();})
+				game.time.events.add(1000, function(){alerted_text.destroy();portal.animations.play('close');})
 			}
 		}
 	},

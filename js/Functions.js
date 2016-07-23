@@ -7,7 +7,7 @@ var rightPlayed = 0;
 var leftPlayed = 0;
 var enemies = {};
 var jumpTimer = 0;
-var ectoplasm = 15;
+var ectoplasm = 30;
 var gameStarted = false;
 var drainingplayer = false;
 var enter_underworld = false;
@@ -77,8 +77,8 @@ function initBullets(game){
 }
 
 function initUI(game){
-	game.add.sprite(10, 0, 'ectoplasm_icon');
-	ectoplasm_text = game.add.text(65, 10, ': ' + ectoplasm.toString() + '/15', {font: "start_font", fontSize: '32px', fill: '#fff'});
+	ectoplasm_icon = game.add.sprite(10, 0, 'ectoplasm_icon');
+	ectoplasm_text = game.add.text(65, 10, ': ' + ectoplasm.toString() + '/30', {font: "start_font", fontSize: '32px', fill: '#fff'});
 }
 
 function addEnemyNodes(game, enemy){
